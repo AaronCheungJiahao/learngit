@@ -1,0 +1,15 @@
+
+CffexDepthStructure2Bytes:{
+  (9#(`byte$ string .util.date2int x`TradingDate),0x000000000000000000),(9#(`byte$string x`SettleGroupID),0x000000000000000000),0x0000,
+  (-4#-8!x`SettleID),(-8#-8!x`LastPrice),(-8#-8!x`PreSettlePrice),(-8#-8!x`PreClosePrice),(-8#-8!x`PreOpenInterest),
+  (-8#-8!x`OpenPrice),(-8#-8!x`HighestPrice),(-8#-8!x`LowestPrice),(-4#-8!`int$x`Volume),0x00000000,(-8#-8!x`Turnover),
+  (-8#-8!x`OpenInterest),(-8#-8!x`ClosePrice),(-8#-8!x`SettlePrice),(-8#-8!x`UpperLimitPrice),(-8#-8!x`LowerLimitPrice),
+  (-8#-8!x`PreDelta),(-8#-8!x`CurrDelta),(9#(`byte$ string (`second $x`Time)),0x000000000000000000),0x000000,(-4#-8!`int$(x`Time) mod 1000),
+  (32#(`byte$string x`Symbol),0x0000000000000000000000000000000000000000000000000000000000000000),
+  (-8#-8!x`BidPrice1),(-4#-8!`int$x`BidVol1),0x00000000,(-8#-8!x`AskPrice1),(-4#-8!`int$x`AskVol1),0x00000000,
+  (-8#-8!x`BidPrice2),(-4#-8!`int$x`BidVol2),0x00000000,(-8#-8!x`AskPrice2),(-4#-8!`int$x`AskVol2),0x00000000,
+  (-8#-8!x`BidPrice3),(-4#-8!`int$x`BidVol3),0x00000000,(-8#-8!x`AskPrice3),(-4#-8!`int$x`AskVol3),0x00000000,
+  (-8#-8!x`BidPrice4),(-4#-8!`int$x`BidVol4),0x00000000,(-8#-8!x`AskPrice4),(-4#-8!`int$x`AskVol4),0x00000000,
+  (-8#-8!x`BidPrice5),(-4#-8!`int$x`BidVol5),0x00000000,(-8#-8!x`AskPrice5),(-4#-8!`int$x`AskVol5),0x00000000
+ };
+ 
