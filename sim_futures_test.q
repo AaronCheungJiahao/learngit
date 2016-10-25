@@ -17,8 +17,8 @@ HDBDIR:@[value;`HDBDIR;"/mnt/kdb_data1/ModelAnalysisTemp1"]  / output
 GW:@[value;`GW;`:192.168.1.41:9000:user1:password]
 
 system "l /mnt/kdb_data1/ModelAnalysisTemp1"
+system "l /mnt/kdb_data2/FeeRateDB/DB"
 
-tbl:select from SimFutures where date=2016.09.30
 
 HDBCOLS:`date`day_night`exch`product`symbol`strategy`max_vol`para1`para2`para3`rounds`pnl`tick_dd`gross_pnl,
     `tot_trade_vol`tot_trade_amt`tot_order_vol`tot_cancel_vol`n_order`n_cancel
@@ -31,10 +31,12 @@ reload:{system "l ",HDBDIR}
 
 // Re-calculate PNL
 refreshPnl:{[tbl]
-    GW: `:192.168.1.41:9000:user1:password;
-    h:hopen GW;
-    (neg h) (`.gw.asyncexec;(`GetLatestFeeRate;());`FeeRateDB);feedata:h(::);
-    hclose h;    
+/     GW: `:192.168.1.41:9000:user1:password;
+/     h:hopen GW;
+/     (neg h) (`.gw.asyncexec;(`GetLatestFeeRate;());`FeeRateDB);feedata:h(::);
+/     hclose h;
+    GetLatestFeeRate:{0!select by date,Exch,ExchCode,Product from FeeRate where date=last .Q.PV}
+    feedata:GetLatestFeeRate[]
     tt:tbl lj 1!`product`SimuFee`FeeMode xcols delete MyProduct from update product:MyProduct from feedata;
     tt:update pnl:`real$gross_pnl-tot_trade_amt*SimuFee from tt ;
     tt1:update pnl:`real$gross_pnl-tot_trade_amt*SimuFee from select from tt where FeeMode=`ByAmt;
@@ -42,6 +44,8 @@ refreshPnl:{[tbl]
     tt:delete SimuFee,FeeMode from tt1,tt;
     tt
   }
+  
+
 
 // Re-calculate PNL on disk
 refreshHdbPnl:{[SimFutures;day]
