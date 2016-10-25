@@ -11,8 +11,14 @@ How to use:
 
 \d .sim
 
+
+
 HDBDIR:@[value;`HDBDIR;"/mnt/kdb_data1/ModelAnalysisTemp1"]  / output
 GW:@[value;`GW;`:192.168.1.41:9000:user1:password]
+
+system "l /mnt/kdb_data1/ModelAnalysisTemp1"
+
+tbl:select from SimFutures where date=2016.09.30
 
 HDBCOLS:`date`day_night`exch`product`symbol`strategy`max_vol`para1`para2`para3`rounds`pnl`tick_dd`gross_pnl,
     `tot_trade_vol`tot_trade_amt`tot_order_vol`tot_cancel_vol`n_order`n_cancel
@@ -25,20 +31,16 @@ reload:{system "l ",HDBDIR}
 
 // Re-calculate PNL
 refreshPnl:{[tbl]
-    tbl:update pnl:`real$gross_pnl-tot_trade_amt*0.00008295 from tbl where product in `shrb`shbu`shhc;
-    tbl:update pnl:`real$gross_pnl-tot_trade_amt*0.000191 from tbl where product=`dlpp;
-    tbl:update pnl:`real$gross_pnl-tot_trade_amt*0.000572 from tbl where product in `dlj`dljm;
-    tbl:update pnl:`real$gross_pnl-tot_trade_amt*0.0002383 from tbl where product=`dli;
-    tbl:update pnl:`real$gross_pnl-tot_trade_vol*0.315 from tbl where product=`zzrm;
-    tbl:update pnl:`real$gross_pnl-tot_trade_vol*0.7056 from tbl where product=`zzcf;
-    tbl:update pnl:`real$gross_pnl-tot_trade_vol*0.159 from tbl where product=`dla;
-    tbl:update pnl:`real$gross_pnl-tot_trade_vol*0.32 from tbl where product=`dll;
-    tbl:update pnl:`real$gross_pnl-tot_trade_vol*0.1192 from tbl where product=`dlcs;
-    tbl:update pnl:`real$gross_pnl-tot_trade_vol*0.1192 from tbl where product=`dlm;
-    tbl:update pnl:`real$gross_pnl-tot_trade_vol*0.1986 from tbl where product=`dlp;
-    tbl:update pnl:`real$gross_pnl-tot_trade_vol*0.1986 from tbl where product=`dly;
-
-    tbl
+    GW: `:192.168.1.41:9000:user1:password;
+    h:hopen GW;
+    (neg h) (`.gw.asyncexec;(`GetLatestFeeRate;());`FeeRateDB);feedata:h(::);
+    hclose h;    
+    tt:tbl lj 1!`product`SimuFee`FeeMode xcols delete MyProduct from update product:MyProduct from feedata;
+    tt:update pnl:`real$gross_pnl-tot_trade_amt*SimuFee from tt ;
+    tt1:update pnl:`real$gross_pnl-tot_trade_amt*SimuFee from select from tt where FeeMode=`ByAmt;
+    tt2:update pnl:`real$gross_pnl-tot_trade_vol*SimuFee from select from tt where FeeMode<>`ByAmt;
+    tt:delete SimuFee,FeeMode from tt1,tt;
+    tt
   }
 
 // Re-calculate PNL on disk
