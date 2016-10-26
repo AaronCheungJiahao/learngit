@@ -6,7 +6,7 @@ system"l /mnt/kdb_data1/TradeLog/DB";
 //   Morning:
 sendTradeLogMorning:{
     [tday]
-  rList:enlist("zhangjiahao@mycapital.net");
+  rList:("zhangjiahao@mycapital.net";"shenweijun@mycapital.net");
   GW: `:192.168.1.41:9000:user1:password;
   h:hopen GW;
   sqlStr: "select from TradeLog where date=",(string (tday)),",DayNight=1";  
@@ -21,7 +21,9 @@ sendTradeLogMorning:{
   res:update style__:`red from res where Num=0;  
   $[0 in res`Num;head:"Morning Report! TradeLog Data Error ![Fail!!!!]";head:"Morning Report! TradeLog Data Succeed[Success!!!!]"];
   ret:.util.sendReportQuick[head;res;rList];
-}
+  0N! "send!!!";
+  };
 
-.
+
 sendTradeLogMorning .z.D
+exit 0;
