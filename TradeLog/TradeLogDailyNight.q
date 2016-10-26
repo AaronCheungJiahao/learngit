@@ -220,12 +220,17 @@ newFileTab:raze {
     } each newDir;
              
             
-my_cols:`InternalDate`CalendarDate`DayNight`Time`MicroSec`Server`Account`ModelId`MsgType`SerialNo`CancelSerialNo`Symbol`Direction`OpenClose`OrderPrice`OrderVol`EntrustNo`EntrustStatus`TradePrice`TradeVol`VolRemain`TradeNo`Speculator`OrderKind`OrderType`ErrorNo`Trigger;
-newFileTab:my_cols xcols newFileTab;
+$[(count newFileTab)<>0;         
+    [
+    my_cols:`InternalDate`CalendarDate`DayNight`Time`MicroSec`Server`Account`ModelId`MsgType`SerialNo`CancelSerialNo`Symbol`Direction`OpenClose`OrderPrice`OrderVol`EntrustNo`EntrustStatus`TradePrice`TradeVol`VolRemain`TradeNo`Speculator`OrderKind`OrderType`ErrorNo`Trigger;
+    newFileTab:my_cols xcols newFileTab;
+    newFileTab:newFileTab,oldTab;
+    ];
+    newFileTab:oldTab];
 
-newFileTab:newFileTab,oldTab;
 
-$[(("D"$string D x)-`week$("D"$string D x)) =4;
+
+  $[(("D"$string D x)-`week$("D"$string D x)) =4;
                                                      dbdir:` sv `:/mnt/kdb_data1/TradeLog/Night,(`$string("D"$string D x)+3),`TradeLog,`$"";
                                                      dbdir:` sv `:/mnt/kdb_data1/TradeLog/Night,(`$string("D"$string D x)+1),`TradeLog,`$""];
   dbdir set .Q.en[`:/mnt/kdb_data1/TradeLog/DB] update `p#Symbol from `Symbol`Time xasc newFileTab;
@@ -259,11 +264,15 @@ newFileTab:raze {
     saveNewFile[tmp_raw] 
     } each newDir;
              
-            
-my_cols:`InternalDate`CalendarDate`DayNight`Time`MicroSec`Server`Account`ModelId`MsgType`SerialNo`CancelSerialNo`Symbol`Direction`OpenClose`OrderPrice`OrderVol`EntrustNo`EntrustStatus`TradePrice`TradeVol`VolRemain`TradeNo`Speculator`OrderKind`OrderType`ErrorNo`Trigger;
-newFileTab:my_cols xcols newFileTab;
+  $[(count newFileTab)<>0;         
+    [
+    my_cols:`InternalDate`CalendarDate`DayNight`Time`MicroSec`Server`Account`ModelId`MsgType`SerialNo`CancelSerialNo`Symbol`Direction`OpenClose`OrderPrice`OrderVol`EntrustNo`EntrustStatus`TradePrice`TradeVol`VolRemain`TradeNo`Speculator`OrderKind`OrderType`ErrorNo`Trigger;
+    newFileTab:my_cols xcols newFileTab;
+    newFileTab:newFileTab,oldTab;
+    ];
+    newFileTab:oldTab];
 
-newFileTab:newFileTab,oldTab;
+
 
 $[(("D"$string D x)-`week$("D"$string D x)) =4;
                                                      dbdir:` sv `:/mnt/kdb_data1/TradeLog/Night,(`$string("D"$string D x)+3),`TradeLog,`$"";

@@ -220,10 +220,14 @@ newFileTab:raze {
     } each newDir;
              
             
-my_cols:`InternalDate`CalendarDate`DayNight`Time`MicroSec`Server`Account`ModelId`MsgType`SerialNo`CancelSerialNo`Symbol`Direction`OpenClose`OrderPrice`OrderVol`EntrustNo`EntrustStatus`TradePrice`TradeVol`VolRemain`TradeNo`Speculator`OrderKind`OrderType`ErrorNo`Trigger;
-newFileTab:my_cols xcols newFileTab;
+  $[(count newFileTab)<>0;         
+    [
+    my_cols:`InternalDate`CalendarDate`DayNight`Time`MicroSec`Server`Account`ModelId`MsgType`SerialNo`CancelSerialNo`Symbol`Direction`OpenClose`OrderPrice`OrderVol`EntrustNo`EntrustStatus`TradePrice`TradeVol`VolRemain`TradeNo`Speculator`OrderKind`OrderType`ErrorNo`Trigger;
+    newFileTab:my_cols xcols newFileTab;
+    newFileTab:newFileTab,oldTab;
+    ];
+    newFileTab:oldTab];
 
-newFileTab:newFileTab,oldTab;
 
  dbdir:` sv `:/mnt/kdb_data1/TradeLog/Day,(`$string"D"$string D x),`TradeLog,`$"";
  dbdir set .Q.en[`:/mnt/kdb_data1/TradeLog/DB] update `p#Symbol from `Symbol`Time xasc newFileTab;
@@ -257,10 +261,14 @@ newFileTab:raze {
     } each newDir;
              
             
-my_cols:`InternalDate`CalendarDate`DayNight`Time`MicroSec`Server`Account`ModelId`MsgType`SerialNo`CancelSerialNo`Symbol`Direction`OpenClose`OrderPrice`OrderVol`EntrustNo`EntrustStatus`TradePrice`TradeVol`VolRemain`TradeNo`Speculator`OrderKind`OrderType`ErrorNo`Trigger;
-newFileTab:my_cols xcols newFileTab;
+ $[(count newFileTab)<>0;         
+    [
+    my_cols:`InternalDate`CalendarDate`DayNight`Time`MicroSec`Server`Account`ModelId`MsgType`SerialNo`CancelSerialNo`Symbol`Direction`OpenClose`OrderPrice`OrderVol`EntrustNo`EntrustStatus`TradePrice`TradeVol`VolRemain`TradeNo`Speculator`OrderKind`OrderType`ErrorNo`Trigger;
+    newFileTab:my_cols xcols newFileTab;
+    newFileTab:newFileTab,oldTab;
+    ];
+    newFileTab:oldTab];
 
-newFileTab:newFileTab,oldTab;
 
   dbdir:` sv `:/mnt/kdb_data1/TradeLog/Day,(`$string"D"$string D x),`TradeLog,`$"";
   dbdir set .Q.en[`:/mnt/kdb_data1/TradeLog/DB] update `p#Symbol from `Symbol`Time xasc newFileTab;
